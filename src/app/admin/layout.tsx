@@ -31,7 +31,7 @@ const menuItems = [
   {
     text: "بیماران",
     icon: <User />,
-    href: "/admin/pationt",
+    href: "/admin/patients",
   },
   {
     text: "کارکنان",
@@ -83,12 +83,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
               {item.text}
             </h3>
           ) : (
-            item.separate
+            <div key={i}>{item.separate}</div>
           )
         )}
       </div>
       <Separator orientation="vertical" />
-      <section>{children}</section>
+      <section className="w-full h-full">{children}</section>
     </div>
   );
 };

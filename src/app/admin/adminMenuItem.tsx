@@ -13,7 +13,6 @@ const AdminMenuItem = ({
   href: string;
 }) => {
   const currentPath = usePathname();
-  console.log(currentPath,' injaaah')
   return (
     <Link href={href}>
       <Button
