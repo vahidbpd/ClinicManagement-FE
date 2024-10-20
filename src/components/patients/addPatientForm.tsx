@@ -22,10 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  fromDate,
-  toCalendarDate,
-} from "@internationalized/date";
+import { fromDate, toCalendarDate } from "@internationalized/date";
 import { I18nProvider } from "@react-aria/i18n";
 import { DateInput } from "@nextui-org/react";
 
@@ -44,8 +41,8 @@ const AddPatientForm = () => {
       phoneNumber: "",
       landlineNumber: "",
       otherTelephoneNumber: "",
-      redisentioalAddress: "",
-      contact_info: "",
+      address: "",
+      familyRelatives: [],
       nationalId: "",
       job: undefined,
       representative: "",
@@ -62,9 +59,9 @@ const AddPatientForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <ScrollArea className="h-[500px] w-full">
-          <div className="flex flex-col gap-5 w-full px-1">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="">
+        <ScrollArea className="h-[500px] w-full pr-2">
+          <div className="flex flex-col gap-5 px-1 w-full my-2">
             <div className="flex gap-2">
               <FormField
                 control={form.control}
@@ -143,10 +140,186 @@ const AddPatientForm = () => {
                 )}
               />
             </div>
+
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>شماره موبایل</FormLabel>
+                    <FormControl>
+                      <Input placeholder="شماره موبایل" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="landlineNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>تلفن ثابت</FormLabel>
+                    <FormControl>
+                      <Input placeholder="تلفن ثابت" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="otherTelephoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>شماره موبایل دوم</FormLabel>
+                    <FormControl>
+                      <Input placeholder="شماره موبایل دوم" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="representative"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>معرف</FormLabel>
+                    <FormControl>
+                      <Input placeholder="معرف" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="familyRelatives"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>وابستگان</FormLabel>
+                    <FormControl>
+                      <Input placeholder="وابستگان" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="nationalId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>کدملی</FormLabel>
+                    <FormControl>
+                      <Input placeholder="کدملی" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="disease"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>بیماری</FormLabel>
+                    <FormControl>
+                      <Input placeholder="بیماری" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="job"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>شغل</FormLabel>
+                    <FormControl>
+                      <Input placeholder="شغل" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="oldFileNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>شماره پرونده قدیمی</FormLabel>
+                    <FormControl>
+                      <Input placeholder="شماره پرونده قدیمی" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="paperFileNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>شماره پرونده کاغذی</FormLabel>
+                    <FormControl>
+                      <Input placeholder="شماره پرونده کاغذی" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>آدرس</FormLabel>
+                  <FormControl>
+                    <Input placeholder="آدرس" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>توضیحات</FormLabel>
+                  <FormControl>
+                    <Input placeholder="توضیحات" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </ScrollArea>
 
-        <Button type="submit">Submit</Button>
+        <Button className="w-full mt-2" type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );

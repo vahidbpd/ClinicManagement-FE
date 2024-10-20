@@ -29,8 +29,8 @@ export const addPatientSchema = z.object({
     .string()
     .min(11, { message: "شماره موبایل باید حداقل 11 رقم باشد" })
     .max(12, { message: "شماره موبایل حداکثر میتواند 12 رقم باشد" }),
-  redisentioalAddress: z.string(),
-  contact_info: z.string(),
+  address: z.string(),
+  familyRelatives: z.array(z.string()).optional(),
   nationalId: z.string(),
   job: z.string(),
   representative: z.string(),
