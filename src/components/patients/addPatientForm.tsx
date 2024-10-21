@@ -22,9 +22,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Check, ChevronsUpDown } from "lucide-react"
+ 
+import { cn } from "@/lib/utils"
 import { fromDate, toCalendarDate } from "@internationalized/date";
 import { I18nProvider } from "@react-aria/i18n";
 import { DateInput } from "@nextui-org/react";
+
+const jobs = [
+  { label: "English", value: "en" },
+  { label: "French", value: "fr" },
+  { label: "German", value: "de" },
+  { label: "Spanish", value: "es" },
+  { label: "Portuguese", value: "pt" },
+  { label: "Russian", value: "ru" },
+  { label: "Japanese", value: "ja" },
+  { label: "Korean", value: "ko" },
+  { label: "Chinese", value: "zh" },
+] as const
 
 const AddPatientForm = () => {
   const todayDate = fromDate(
@@ -44,7 +72,7 @@ const AddPatientForm = () => {
       address: "",
       familyRelatives: [],
       nationalId: "",
-      job: undefined,
+      job: "",
       representative: "",
       oldFileNumber: "",
       paperFileNumber: "",
@@ -236,10 +264,7 @@ const AddPatientForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>بیماری</FormLabel>
-                    <FormControl>
-                      <Input placeholder="بیماری" {...field} />
-                    </FormControl>
-                    <FormMessage />
+                    <Input placeholder="بیماری" {...field} />
                   </FormItem>
                 )}
               />
@@ -249,10 +274,56 @@ const AddPatientForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>شغل</FormLabel>
-                    <FormControl>
-                      <Input placeholder="شغل" {...field} />
-                    </FormControl>
-                    <FormMessage />
+                    <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-[200px] justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? jobs.find(
+                            (job) => job.value === field.value
+                          )?.label
+                        : "انتخاب شغل"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="جستجوی شغل..." />
+                    <CommandList>
+                      <CommandEmpty>شعلی پیدا نشد</CommandEmpty>
+                      <CommandGroup>
+                        {jobs.map((job) => (
+                          <CommandItem
+                            value={job.label}
+                            key={job.value}
+                            onSelect={() => {
+                              form.setValue("job", job.value)
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                job.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {job.label}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
                   </FormItem>
                 )}
               />
