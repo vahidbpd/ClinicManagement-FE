@@ -37,5 +37,10 @@ export const addPatientSchema = z.object({
   oldFileNumber: z.string().optional(),
   paperFileNumber: z.string().optional(),
   description: z.string(),
-  disease: z.array(z.string()).optional(),
+  disease: z.array(z.string()),
+});
+
+export const diseaseSchema = z.object({
+  title: z.string(),
+  description: z.string(),
 });
