@@ -11,9 +11,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { FilePlus } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import AddPatientDiseaseSelectItem from "./addPatientDiseaseSelectItem";
-import { DiseaseSelectProps } from "@/types/disease.types";
-import { useEffect } from "react";
+import { AddPatientSelectProps } from "@/types/disease.types";
+import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import useDebounce from "@/hooks/useDebounce";
+import AddPatientSelectItem from "../addPatientSelectItem";
+import AddPatientSelect from "../addPatienSelect";
 
 const diseases = [
   { id: "1", title: "یییب", description: "یبیب بللبل یبب ببیب" },
@@ -26,23 +30,24 @@ const diseases = [
 ];
 
 const AddPatientDiseaseSelect = ({
-  selectedDiseases,
-  onSelectedDiseasesChange,
-}: DiseaseSelectProps) => {
-  const diseaseHandler = (isCheckhed: boolean | string, id: string) => {
-    if (isCheckhed === true) {
-      onSelectedDiseasesChange([...selectedDiseases, id]);
-    } else if (isCheckhed === false) {
-      onSelectedDiseasesChange(
-        selectedDiseases?.filter((diseaseId) => diseaseId !== id)
-      );
-    }
-  };
-  useEffect(() => {
-    console.log(selectedDiseases, ' heree')
-  },[selectedDiseases])
+  selectedItems,
+  onSelectedItemsChange,
+}: AddPatientSelectProps) => {
+  const [diseaseSearch, setDiseaseSearch] = useState("");
+  const debouncedDiseaseSearch = useDebounce(diseaseSearch);
+
+  // const diseaseHandler = (isCheckhed: boolean | string, id: string) => {
+  //   if (isCheckhed === true) {
+  //     onSelectedItemsChange([...selectedItems, id]);
+  //   } else if (isCheckhed === false) {
+  //     onSelectedItemsChange(
+  //       selectedItems?.filter((itemId) => itemId !== id)
+  //     );
+  //   }
+  // };
   return (
-    <Sheet>
+    <>
+      {/* <Sheet>
       <SheetTrigger asChild>
         <Button className="flex items-center gap-2 w-full">
           <FilePlus />
@@ -55,33 +60,58 @@ const AddPatientDiseaseSelect = ({
           <SheetDescription className="text-right">
             شما میتوانید بیماری های مورد نظر را انتخاب کنید
           </SheetDescription>
+          <div className="flex flex-col items-center gap-2 pt-2">
+            <AddPricingRules id={null}/> 
+            <div className="flex items-center w-full gap-2">
+              <Input
+                value={diseaseSearch}
+                onChange={(e) => setDiseaseSearch(e.target.value)}
+                className="w-3/4 "
+                placeholder="جستجو..."
+              />
+              <Button className="w-1/4">جستجو</Button>
+            </div>
+            <Separator className="w-full" />
+          </div>
         </SheetHeader>
         <ScrollArea className="h-[600px] w-full">
           {diseases &&
             // !isPending &&
             diseases.map((disease, i) => (
-              <AddPatientDiseaseSelectItem
-                key={i}
+              <AddPatientSelectItem
+              key={i}
                 id={disease.id}
                 title={disease.title}
                 description={disease.description}
-                isChecked={selectedDiseases.some(
-                  (selectDisease) => selectDisease === disease.id
+                isChecked={selectedItems.some(
+                  (selectedItem) => selectedItem === disease.id
                 )}
                 onCheckedChange={diseaseHandler}
-              />
-            ))}
+                />
+              ))}
         </ScrollArea>
         <SheetClose asChild>
           <Button
           // disabled={isPending}
           >
             تایید
-            {/* {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} */}
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           </Button>
         </SheetClose>
       </SheetContent>
-    </Sheet>
+    </Sheet> */}
+
+      <AddPatientSelect
+        data={diseases}
+        title="انتخاب بیماری"
+        description="شما میتوانید بیماری های مورد نظر را انتخاب کنید"
+        search={diseaseSearch}
+        setSearch={setDiseaseSearch}
+        selectedItems={selectedItems}
+        onSelectedItemsChange={onSelectedItemsChange}
+        type="disease"
+      />
+    </>
   );
 };
 

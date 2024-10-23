@@ -1,7 +1,6 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -9,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { DiseaseSelectItemProps } from "@/types/disease.types";
 
-const AddPatientDiseaseSelectItem = ({
+const AddPatientSelectItem = ({
   title,
   description,
   id,
@@ -43,4 +42,4 @@ const AddPatientDiseaseSelectItem = ({
   );
 };
 
-export default AddPatientDiseaseSelectItem;
+export default AddPatientSelectItem;

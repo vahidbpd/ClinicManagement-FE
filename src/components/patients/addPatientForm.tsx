@@ -42,7 +42,7 @@ import { fromDate, toCalendarDate } from "@internationalized/date";
 import { I18nProvider } from "@react-aria/i18n";
 import { DateInput } from "@nextui-org/react";
 import AddPatientDiseaseSelect from "./addPatientDiseaseSelect/addPatientDiseaseSelect";
-import { useState } from "react";
+import AddPatientFamilyRelativesItem from "./addPatientFamilyRelatives/addPatientFamilyRelativesItem";
 
 const jobs = [
   { label: "English", value: "en" },
@@ -57,8 +57,6 @@ const jobs = [
 ] as const;
 
 const AddPatientForm = () => {
-
-  
   const todayDate = fromDate(
     new Date(new Date().toISOString().split("T")[0]),
     "Asia/Tehran"
@@ -235,22 +233,68 @@ const AddPatientForm = () => {
             <div className="flex gap-2">
               <FormField
                 control={form.control}
-                name="familyRelatives"
+                name="job"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>وابستگان</FormLabel>
-                    <FormControl>
-                      <Input placeholder="وابستگان" {...field} />
-                    </FormControl>
-                    <FormMessage />
+                  <FormItem className="w-1/2">
+                    <FormLabel>شغل</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "w-full justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? jobs.find((job) => job.value === field.value)
+                                  ?.label
+                              : "انتخاب شغل"}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="جستجوی شغل..." />
+                          <CommandList>
+                            <CommandEmpty>شعلی پیدا نشد</CommandEmpty>
+                            <CommandGroup>
+                              {jobs.map((job) => (
+                                <CommandItem
+                                  value={job.label}
+                                  key={job.value}
+                                  onSelect={() => {
+                                    form.setValue("job", job.value);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      job.value === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {job.label}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="nationalId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-1/2">
                     <FormLabel>کدملی</FormLabel>
                     <FormControl>
                       <Input placeholder="کدملی" {...field} />
@@ -260,76 +304,6 @@ const AddPatientForm = () => {
                 )}
               />
             </div>
-
-            <FormField
-              control={form.control}
-              name="job"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>شغل</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-full justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value
-                            ? jobs.find((job) => job.value === field.value)
-                                ?.label
-                            : "انتخاب شغل"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <Command>
-                        <CommandInput placeholder="جستجوی شغل..." />
-                        <CommandList>
-                          <CommandEmpty>شعلی پیدا نشد</CommandEmpty>
-                          <CommandGroup>
-                            {jobs.map((job) => (
-                              <CommandItem
-                                value={job.label}
-                                key={job.value}
-                                onSelect={() => {
-                                  form.setValue("job", job.value);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    job.value === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                                {job.label}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="disease"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>بیماری</FormLabel>
-                  <Input placeholder="بیماری" {...field} />
-                </FormItem>
-              )}
-            />
 
             <div className="flex gap-2">
               <FormField
@@ -376,14 +350,31 @@ const AddPatientForm = () => {
 
             <FormField
               control={form.control}
+              name="familyRelatives"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>بستگان</FormLabel>
+                  <FormControl>
+                    <AddPatientFamilyRelativesItem
+                      onSelectedItemsChange={field.onChange}
+                      selectedItems={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="disease"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>آدرس</FormLabel>
+                  <FormLabel>بیماری</FormLabel>
                   <FormControl>
                     <AddPatientDiseaseSelect
-                      onSelectedDiseasesChange={field.onChange}
-                      selectedDiseases={field.value}
+                      onSelectedItemsChange={field.onChange}
+                      selectedItems={field.value}
                     />
                   </FormControl>
                   <FormMessage />
