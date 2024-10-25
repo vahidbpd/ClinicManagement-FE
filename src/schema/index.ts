@@ -32,7 +32,7 @@ export const addPatientSchema = z.object({
   address: z.string(),
   familyRelatives: z.array(z.string()),
   nationalId: z.string(),
-  job: z.string(),
+  job: z.array(z.string()),
   representative: z.string(),
   oldFileNumber: z.string().optional(),
   paperFileNumber: z.string().optional(),
@@ -41,6 +41,10 @@ export const addPatientSchema = z.object({
 });
 
 export const diseaseSchema = z.object({
-  title: z.string(),
+  title: z.string().min(1, { message: "یک عنوان برای بیماری انتخاب کنید" }),
   description: z.string(),
+});
+
+export const jobSchema = z.object({
+  title: z.string().min(1, { message: "یک عنوان برای شغل انتخاب کنید" }),
 });

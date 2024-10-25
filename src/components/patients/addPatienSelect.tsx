@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import AddPatientSelectItem from "./addPatientSelectItem";
 import AddDisease from "../disease/addDisease";
+import AddJob from "../jobs/addJob";
 
 const AddPatientSelect = ({
   selectedItems,
@@ -38,7 +39,7 @@ const AddPatientSelect = ({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="flex items-center gap-2 w-full">
+        <Button variant={"outline"} className="flex items-center gap-2 w-full">
           <FilePlus />
           {title}
         </Button>
@@ -51,6 +52,7 @@ const AddPatientSelect = ({
           </SheetDescription>
           <div className="flex flex-col items-center gap-2 pt-2">
             {type === "disease" && <AddDisease id={null} />}
+            {type === "job" && <AddJob id={null} />}
             <div className="flex items-center w-full gap-2">
               <Input
                 value={search}
@@ -71,7 +73,7 @@ const AddPatientSelect = ({
                 key={i}
                 id={item.id}
                 title={item.title}
-                description={item.description}
+                description={"description" in item ? item.description : ""}
                 isChecked={selectedItems.some(
                   (selectedItem) => selectedItem === item.id
                 )}

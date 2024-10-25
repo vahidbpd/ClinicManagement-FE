@@ -70,7 +70,7 @@ const patients = [
   },
 ];
 
-const AddPatientFamilyRelativesItem = ({
+const AddPatientFamilyRelatives= ({
   selectedItems,
   onSelectedItemsChange,
 }: AddPatientSelectProps) => {
@@ -153,4 +153,4 @@ const AddPatientFamilyRelativesItem = ({
   );
 };
 
-export default AddPatientFamilyRelativesItem;
+export default AddPatientFamilyRelatives;

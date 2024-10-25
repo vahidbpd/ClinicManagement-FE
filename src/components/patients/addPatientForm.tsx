@@ -42,7 +42,8 @@ import { fromDate, toCalendarDate } from "@internationalized/date";
 import { I18nProvider } from "@react-aria/i18n";
 import { DateInput } from "@nextui-org/react";
 import AddPatientDiseaseSelect from "./addPatientDiseaseSelect/addPatientDiseaseSelect";
-import AddPatientFamilyRelativesItem from "./addPatientFamilyRelatives/addPatientFamilyRelativesItem";
+import AddPatientFamilyRelatives from "./addPatientFamilyRelatives/addPatientFamilyRelativesItem";
+import AddPatientJob from "./addPatientJob/addPatientJob";
 
 const jobs = [
   { label: "English", value: "en" },
@@ -74,7 +75,7 @@ const AddPatientForm = () => {
       address: "",
       familyRelatives: [],
       nationalId: "",
-      job: "",
+      job: [],
       representative: "",
       oldFileNumber: "",
       paperFileNumber: "",
@@ -126,7 +127,7 @@ const AddPatientForm = () => {
                 control={form.control}
                 name="gender"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-1/2">
                     <FormLabel>جنسیت</FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -145,31 +146,45 @@ const AddPatientForm = () => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
-                name="birthDate"
+                name="nationalId"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>تاریخ تولد</FormLabel>
+                  <FormItem className="w-1/2">
+                    <FormLabel>کدملی</FormLabel>
                     <FormControl>
-                      <I18nProvider locale="fa-IR-u-ca-persian">
-                        <DateInput
-                          variant="bordered"
-                          className="max-w-md"
-                          label="تاریخ تولد"
-                          value={toCalendarDate(field.value)}
-                          onChange={(value) => {
-                            console.log(value);
-                            field.onChange(value);
-                          }}
-                        />
-                      </I18nProvider>
+                      <Input placeholder="کدملی" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="birthDate"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>تاریخ تولد</FormLabel>
+                  <FormControl>
+                    <I18nProvider locale="fa-IR-u-ca-persian">
+                      <DateInput
+                        variant="bordered"
+                        className="max-w-md"
+                        label="تاریخ تولد"
+                        value={toCalendarDate(field.value)}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
+                      />
+                    </I18nProvider>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="flex gap-2">
               <FormField
@@ -233,81 +248,6 @@ const AddPatientForm = () => {
             <div className="flex gap-2">
               <FormField
                 control={form.control}
-                name="job"
-                render={({ field }) => (
-                  <FormItem className="w-1/2">
-                    <FormLabel>شغل</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "w-full justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value
-                              ? jobs.find((job) => job.value === field.value)
-                                  ?.label
-                              : "انتخاب شغل"}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[200px] p-0">
-                        <Command>
-                          <CommandInput placeholder="جستجوی شغل..." />
-                          <CommandList>
-                            <CommandEmpty>شعلی پیدا نشد</CommandEmpty>
-                            <CommandGroup>
-                              {jobs.map((job) => (
-                                <CommandItem
-                                  value={job.label}
-                                  key={job.value}
-                                  onSelect={() => {
-                                    form.setValue("job", job.value);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      job.value === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {job.label}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="nationalId"
-                render={({ field }) => (
-                  <FormItem className="w-1/2">
-                    <FormLabel>کدملی</FormLabel>
-                    <FormControl>
-                      <Input placeholder="کدملی" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="flex gap-2">
-              <FormField
-                control={form.control}
                 name="oldFileNumber"
                 render={({ field }) => (
                   <FormItem>
@@ -350,12 +290,29 @@ const AddPatientForm = () => {
 
             <FormField
               control={form.control}
+              name="job"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>شغل</FormLabel>
+                  <FormControl>
+                    <AddPatientJob
+                      onSelectedItemsChange={field.onChange}
+                      selectedItems={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="familyRelatives"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>بستگان</FormLabel>
                   <FormControl>
-                    <AddPatientFamilyRelativesItem
+                    <AddPatientFamilyRelatives
                       onSelectedItemsChange={field.onChange}
                       selectedItems={field.value}
                     />
@@ -399,7 +356,7 @@ const AddPatientForm = () => {
         </ScrollArea>
 
         <Button className="w-full mt-2" type="submit">
-          Submit
+          افزودن بیمار
         </Button>
       </form>
     </Form>
