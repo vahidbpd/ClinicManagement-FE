@@ -1,12 +1,15 @@
 "use client";
 import {
+  BriefcaseBusiness,
   Calendar,
   ChevronDown,
   ChevronRight,
+  Frown,
   Home,
   Inbox,
   LucideProps,
   Minus,
+  Pill,
   Plus,
   Search,
 } from "lucide-react";
@@ -98,19 +101,19 @@ const items: MenuItemType[] = [
         url: "/admin/setting",
         items: [
           {
-            title: "ویزیت ها",
-            icon: ChartNoAxesColumn,
-            url: "/admin/visits",
+            title: "شغل ها",
+            icon: BriefcaseBusiness,
+            url: "/admin/setting/jobs",
           },
           {
-            title: "تنظیمات",
-            icon: Settings,
-            url: "/admin/setting",
+            title: "بیماری ها",
+            icon: Frown,
+            url: "/admin/setting/disease",
           },
           {
-            title: "خروج",
-            icon: Contact,
-            url: "/admin/logout",
+            title: "دارو ها",
+            icon: Pill,
+            url: "/admin/setting/medicine",
           },
         ],
       },
@@ -177,8 +180,9 @@ export function AppSidebar() {
                             <SidebarMenuItem>
                               <CollapsibleTrigger asChild>
                                 <SidebarMenuButton
-                                className={`text-xl flex justify-between ${isActiveItem ? '!text-white !bg-black' : ''}`}
-                                
+                                  className={`text-xl flex justify-between ${
+                                    isActiveItem ? "!text-white !bg-black" : ""
+                                  }`}
                                   isActive={isActiveItem}
                                 >
                                   <Link
@@ -197,31 +201,31 @@ export function AppSidebar() {
                                 </SidebarMenuButton>
                               </CollapsibleTrigger>
                               <CollapsibleContent>
-                                <SidebarMenuSub>
+                                <SidebarMenuSub className="!border-l-0 !border-r-1">
                                   {subItem.items.map((subMenuItem, i) => {
-                                    const isActiveSubMenuItem = isActive(currentPath,subMenuItem.url);
+                                    const isActiveSubMenuItem = isActive(
+                                      currentPath,
+                                      subMenuItem.url
+                                    );
                                     return (
-                                      <SidebarMenuSubItem
-                                        key={i}
-                                      
-                                      >
+                                      <SidebarMenuSubItem key={i}>
                                         <SidebarMenuButton
                                           className={
                                             isActiveSubMenuItem
-                                              ? "text-xl !text-white !bg-black xxx"
-                                              : "text-xl"
+                                              ? "text-lg !text-white !bg-black xxx"
+                                              : "text-lg"
                                           }
                                           asChild
                                           isActive={isActiveSubMenuItem}
                                         >
                                           <Link
-                                          className="ss"
+                                            className="ss"
                                             href={subMenuItem.url}
                                           >
                                             {subMenuItem.icon && (
                                               <subMenuItem.icon
-                                                size={100}
-                                                className="!w-[25px] !h-[25px]"
+                                               
+                                                className="!w-[20px] !h-[20px]"
                                               />
                                             )}
 
