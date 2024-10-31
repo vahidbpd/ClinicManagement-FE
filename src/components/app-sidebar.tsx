@@ -108,12 +108,12 @@ const items: MenuItemType[] = [
           {
             title: "بیماری ها",
             icon: Frown,
-            url: "/admin/setting/disease",
+            url: "/admin/setting/diseases",
           },
           {
             title: "دارو ها",
             icon: Pill,
-            url: "/admin/setting/medicine",
+            url: "/admin/setting/medicines",
           },
         ],
       },

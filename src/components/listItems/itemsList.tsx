@@ -8,7 +8,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ItemsTable from "./itemsTable";
 import { ItemListProps } from "@/types/itemsList.types";
-import ItemListHeader from "./itemListHeadeR";
+import ItemListHeader from "./itemListHeader";
 
 const ItemsList: React.FC<ItemListProps> = ({
   title,

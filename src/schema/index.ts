@@ -48,3 +48,8 @@ export const diseaseSchema = z.object({
 export const jobSchema = z.object({
   title: z.string().min(1, { message: "یک عنوان برای شغل انتخاب کنید" }),
 });
+
+export const medicineSchema = z.object({
+  title: z.string().min(1, { message: "یک عنوان برای دارو وارد کنید" }),
+  description: z.string().optional(),
+});

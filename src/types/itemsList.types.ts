@@ -22,3 +22,9 @@ type TableItems = {
 export type ItemsTableProps = TableHeader & TableItems;
 
 export type ItemListProps = ItemListHederProps & TableItems;
+
+export type AddItemProps = {
+  title: string;
+  id: string | null;
+  AddItemForm: React.ComponentType<{ id: string | null }>;
+};
