@@ -212,7 +212,7 @@ export function AppSidebar() {
                                         <SidebarMenuButton
                                           className={
                                             isActiveSubMenuItem
-                                              ? "text-lg !text-white !bg-black xxx"
+                                              ? "text-lg !text-white !bg-black"
                                               : "text-lg"
                                           }
                                           asChild
