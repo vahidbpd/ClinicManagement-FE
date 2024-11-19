@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { addPatientSchema } from "@/schema/index";
+import { doctorSchema } from "@/schema/index";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "../../ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -25,17 +25,14 @@ import {
 import { fromDate, toCalendarDate } from "@internationalized/date";
 import { I18nProvider } from "@react-aria/i18n";
 import { DateInput } from "@nextui-org/react";
-import AddPatientDiseaseSelect from "./addPatientDiseaseSelect/addPatientDiseaseSelect";
-import AddPatientFamilyRelatives from "./addPatientFamilyRelatives/addPatientFamilyRelativesItem";
-import AddPatientJob from "./addPatientJob/addPatientJob";
 
-const AddPatientForm = () => {
+const AddDoctorForm = ({ id }: { id: string | null }) => {
   const todayDate = fromDate(
     new Date(new Date().toISOString().split("T")[0]),
     "Asia/Tehran"
   );
-  const form = useForm<z.infer<typeof addPatientSchema>>({
-    resolver: zodResolver(addPatientSchema),
+  const form = useForm<z.infer<typeof doctorSchema>>({
+    resolver: zodResolver(doctorSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -45,18 +42,17 @@ const AddPatientForm = () => {
       landlineNumber: "",
       otherTelephoneNumber: "",
       address: "",
-      familyRelatives: [],
       nationalId: "",
-      job: [],
-      representative: "",
-      oldFileNumber: "",
-      paperFileNumber: "",
       description: "",
-      disease: [],
+      expertise: [],
+      maximumDailyVisit: 0,
+      doctorServices: [],
+      medicalSystemNumber: "",
+      doctorWork: [],
     },
   });
 
-  function onSubmit(values: z.infer<typeof addPatientSchema>) {
+  function onSubmit(values: z.infer<typeof doctorSchema>) {
     console.log(values);
   }
 
@@ -220,12 +216,12 @@ const AddPatientForm = () => {
             <div className="flex gap-2">
               <FormField
                 control={form.control}
-                name="oldFileNumber"
+                name="medicalSystemNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>شماره پرونده قدیمی</FormLabel>
+                    <FormLabel>کد نظام پزشکی</FormLabel>
                     <FormControl>
-                      <Input placeholder="شماره پرونده قدیمی" {...field} />
+                      <Input placeholder="کد نظام پزشکی" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -233,12 +229,15 @@ const AddPatientForm = () => {
               />
               <FormField
                 control={form.control}
-                name="paperFileNumber"
+                name="maximumDailyVisit"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>شماره پرونده کاغذی</FormLabel>
+                    <FormLabel>حداکثر تعداد ویزیت در روز</FormLabel>
                     <FormControl>
-                      <Input placeholder="شماره پرونده کاغذی" {...field} />
+                      <Input
+                        placeholder="حداکثر تعداد ویزیت در روز"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -262,15 +261,15 @@ const AddPatientForm = () => {
 
             <FormField
               control={form.control}
-              name="job"
+              name="expertise"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>شغل</FormLabel>
+                  <FormLabel>تخصص ها</FormLabel>
                   <FormControl>
-                    <AddPatientJob
+                    {/* <AddPatientJob
                       onSelectedItemsChange={field.onChange}
                       selectedItems={field.value}
-                    />
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -279,15 +278,15 @@ const AddPatientForm = () => {
 
             <FormField
               control={form.control}
-              name="familyRelatives"
+              name="doctorServices"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>بستگان</FormLabel>
+                  <FormLabel>خدمات پزشک</FormLabel>
                   <FormControl>
-                    <AddPatientFamilyRelatives
+                    {/* <AddPatientFamilyRelatives
                       onSelectedItemsChange={field.onChange}
                       selectedItems={field.value}
-                    />
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -296,15 +295,15 @@ const AddPatientForm = () => {
 
             <FormField
               control={form.control}
-              name="disease"
+              name="doctorWork"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>بیماری</FormLabel>
+                  <FormLabel>زمان کاری پزشک</FormLabel>
                   <FormControl>
-                    <AddPatientDiseaseSelect
+                    {/* <AddPatientDiseaseSelect
                       onSelectedItemsChange={field.onChange}
                       selectedItems={field.value}
-                    />
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -335,4 +334,4 @@ const AddPatientForm = () => {
   );
 };
 
-export default AddPatientForm;
+export default AddDoctorForm;

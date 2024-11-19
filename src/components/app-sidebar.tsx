@@ -12,6 +12,8 @@ import {
   Pill,
   Plus,
   Search,
+  Stethoscope,
+  Users,
 } from "lucide-react";
 import {
   Sidebar,
@@ -80,6 +82,18 @@ const items: MenuItemType[] = [
         title: "کارکنان",
         icon: Contact,
         url: "/admin/staff",
+        items: [
+          {
+            title: "دکتر ها",
+            icon: Stethoscope,
+            url: "/admin/staff/doctors",
+          },
+          {
+            title: "پرسنل",
+            icon: Users,
+            url: "/admin/staff/personnels",
+          },
+        ],
       },
     ],
   },
@@ -223,10 +237,7 @@ export function AppSidebar() {
                                             href={subMenuItem.url}
                                           >
                                             {subMenuItem.icon && (
-                                              <subMenuItem.icon
-                                               
-                                                className="!w-[20px] !h-[20px]"
-                                              />
+                                              <subMenuItem.icon className="!w-[20px] !h-[20px]" />
                                             )}
 
                                             <span>{subMenuItem.title}</span>
