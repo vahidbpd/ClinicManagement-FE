@@ -25,6 +25,9 @@ import {
 import { fromDate, toCalendarDate } from "@internationalized/date";
 import { I18nProvider } from "@react-aria/i18n";
 import { DateInput } from "@nextui-org/react";
+import AddDoctorExpertise from "./addDoctorExpertise";
+import AddDoctorService from "./addDoctorService";
+import AddDoctorDoctorWork from "./addDoctorDoctorWork";
 
 const AddDoctorForm = ({ id }: { id: string | null }) => {
   const todayDate = fromDate(
@@ -197,20 +200,6 @@ const AddDoctorForm = ({ id }: { id: string | null }) => {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="representative"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>معرف</FormLabel>
-                    <FormControl>
-                      <Input placeholder="معرف" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
             <div className="flex gap-2">
@@ -237,6 +226,8 @@ const AddDoctorForm = ({ id }: { id: string | null }) => {
                       <Input
                         placeholder="حداکثر تعداد ویزیت در روز"
                         {...field}
+                        onChange={(value) => field.onChange(+value)}
+                        type="number"
                       />
                     </FormControl>
                     <FormMessage />
@@ -266,10 +257,10 @@ const AddDoctorForm = ({ id }: { id: string | null }) => {
                 <FormItem>
                   <FormLabel>تخصص ها</FormLabel>
                   <FormControl>
-                    {/* <AddPatientJob
+                    <AddDoctorExpertise
                       onSelectedItemsChange={field.onChange}
                       selectedItems={field.value}
-                    /> */}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -283,10 +274,10 @@ const AddDoctorForm = ({ id }: { id: string | null }) => {
                 <FormItem>
                   <FormLabel>خدمات پزشک</FormLabel>
                   <FormControl>
-                    {/* <AddPatientFamilyRelatives
+                    <AddDoctorService
                       onSelectedItemsChange={field.onChange}
                       selectedItems={field.value}
-                    /> */}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -300,10 +291,10 @@ const AddDoctorForm = ({ id }: { id: string | null }) => {
                 <FormItem>
                   <FormLabel>زمان کاری پزشک</FormLabel>
                   <FormControl>
-                    {/* <AddPatientDiseaseSelect
+                    <AddDoctorDoctorWork
                       onSelectedItemsChange={field.onChange}
                       selectedItems={field.value}
-                    /> */}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

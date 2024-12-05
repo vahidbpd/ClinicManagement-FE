@@ -18,6 +18,8 @@ import { Separator } from "@/components/ui/separator";
 import useDebounce from "@/hooks/useDebounce";
 import AddPatientSelectItem from "../addPatientSelectItem";
 import AddPatientSelect from "../addPatienSelect";
+import AddDisease from "@/components/disease/addDisease";
+import AddItemSelect from "@/components/listItems/addItemSelect";
 
 const diseases = [
   { id: "1", title: "یییب", description: "یبیب بللبل یبب ببیب" },
@@ -101,7 +103,7 @@ const AddPatientDiseaseSelect = ({
       </SheetContent>
     </Sheet> */}
 
-      <AddPatientSelect
+      <AddItemSelect
         data={diseases}
         title="انتخاب بیماری"
         description="شما میتوانید بیماری های مورد نظر را انتخاب کنید"
@@ -109,8 +111,10 @@ const AddPatientDiseaseSelect = ({
         setSearch={setDiseaseSearch}
         selectedItems={selectedItems}
         onSelectedItemsChange={onSelectedItemsChange}
-        type="disease"
-      />
+  
+      >
+        <AddDisease id={null} />
+      </AddItemSelect>
     </>
   );
 };

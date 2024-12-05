@@ -1,5 +1,4 @@
 import { CalendarDate } from "@internationalized/date";
-import { time } from "console";
 import { z } from "zod";
 
 export const loginSchema = z.object({
@@ -55,7 +54,13 @@ export const medicineSchema = z.object({
   description: z.string().optional(),
 });
 
-const dayOfWork = z.enum(["sat", "sun", "mon", "tus", "wed", "thu", "fri"]);
+export const dayOfWork = z.enum(["sat", "sun", "mon", "tus", "wed", "thu", "fri"]);
+
+export const doctorWorkSchema = z.object({
+  day: dayOfWork,
+  startAt: z.string().time(),
+  endAt: z.string().time(),
+});
 
 export const doctorSchema = z.object({
   firstName: z.string(),
@@ -80,11 +85,15 @@ export const doctorSchema = z.object({
   expertise: z.array(z.string()),
   maximumDailyVisit: z.number(),
   doctorServices: z.array(z.string()),
-  doctorWork: z.array(
-    z.object({
-      day: dayOfWork,
-      startAt: z.string().time(),
-      endAt: z.string().time(),
-    })
-  ),
+  doctorWork: z.array(doctorWorkSchema),
+});
+
+export const expertiseSchema = z.object({
+  title: z.string().min(1, { message: "یک عنوان برای تخصص انتخاب کنید" }),
+  description: z.string(),
+});
+
+export const serviceSchema = z.object({
+  title: z.string().min(1, { message: "یک عنوان برای خدمات انتخاب کنید" }),
+  description: z.string(),
 });

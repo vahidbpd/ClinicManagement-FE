@@ -9,28 +9,45 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { FilePlus } from "lucide-react";
+import { FilePlus, Pencil } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { AddPatientSelectDataProps } from "@/types/disease.types";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import AddPatientSelectItem from "./addPatientSelectItem";
 
-const AddPatientSelect = ({
+import {
+  AddItemSelectDataProps,
+  doctorWorkOnChange,
+} from "@/types/itemsList.types";
+import AddItemSelectItem from "./addItemSelectItem";
+import { DoctorWork } from "@/types/doctor.types";
+import DoctorWorkItem from "../staff/doctors/doctorWork/doctorWorkItem";
+
+const AddItemSelect = ({
   selectedItems,
   onSelectedItemsChange,
+  doctorWorkOnChange,
   title,
   description,
   search,
   setSearch,
   data,
-  children
-}: AddPatientSelectDataProps) => {
+  children,
+  AddItemForm,
+}: AddItemSelectDataProps) => {
   const itemCheckedHandler = (isCheckhed: boolean | string, id: string) => {
-    if (isCheckhed === true) {
-      onSelectedItemsChange([...selectedItems, id]);
-    } else if (isCheckhed === false) {
-      onSelectedItemsChange(selectedItems?.filter((itemId) => itemId !== id));
+    if (isCheckhed === true && onSelectedItemsChange) {
+      onSelectedItemsChange([...(selectedItems as string[]), id]);
+    } else if (isCheckhed === false && onSelectedItemsChange) {
+      onSelectedItemsChange(
+        selectedItems?.filter((itemId) => itemId !== id) as string[]
+      );
+    }
+  };
+
+  const itemDeleteHandler = (index: number) => {
+    if (doctorWorkOnChange) {
+      const updatedSelectedItems = selectedItems.filter((_, i) => i !== index);
+      doctorWorkOnChange(updatedSelectedItems as DoctorWork[]);
     }
   };
 
@@ -66,7 +83,7 @@ const AddPatientSelect = ({
           {data &&
             // !isPending &&
             data.map((item, i) => (
-              <AddPatientSelectItem
+              <AddItemSelectItem
                 key={i}
                 id={item.id}
                 title={item.title}
@@ -77,6 +94,37 @@ const AddPatientSelect = ({
                 onCheckedChange={itemCheckedHandler}
               />
             ))}
+          {AddItemForm &&
+            selectedItems.map((item, i) => {
+              const doctorWorkItem = item as DoctorWork;
+              return (
+                <DoctorWorkItem
+                  key={i}
+                  day={doctorWorkItem.day}
+                  endAt={doctorWorkItem.endAt}
+                  startAt={doctorWorkItem.startAt}
+                  index={i}
+                  onDelete={itemDeleteHandler}
+                  onEdit={() => {
+                    console.log("test");
+                  }}
+                >
+                  <AddItemForm
+                    key={i}
+                    customTriggerButton={
+                      <Button size="icon" variant="outline">
+                        <Pencil />
+                      </Button>
+                    }
+                    onSelectedItemsChange={
+                      doctorWorkOnChange as doctorWorkOnChange
+                    }
+                    selectedItems={selectedItems as DoctorWork[]}
+                    index={i}
+                  />
+                </DoctorWorkItem>
+              );
+            })}
         </ScrollArea>
         <SheetClose asChild>
           <Button
@@ -91,4 +139,4 @@ const AddPatientSelect = ({
   );
 };
 
-export default AddPatientSelect;
+export default AddItemSelect;

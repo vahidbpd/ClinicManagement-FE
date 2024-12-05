@@ -3,6 +3,8 @@ import { AddPatientSelectProps } from "@/types/disease.types";
 import useDebounce from "@/hooks/useDebounce";
 import AddPatientSelect from "../addPatienSelect";
 import { useState } from "react";
+import AddJob from "@/components/jobs/addJob";
+import AddItemSelect from "@/components/listItems/addItemSelect";
 
 const jobs = [
   { id: "1", title: "یییب" },
@@ -22,7 +24,7 @@ const AddPatientJob = ({
   const debouncedDiseaseSearch = useDebounce(jobSearch);
 
   return (
-    <AddPatientSelect
+    <AddItemSelect
       data={jobs}
       title="انتخاب شغل"
       description="شما میتوانید شغل مورد نظر را انتخاب کنید"
@@ -30,8 +32,9 @@ const AddPatientJob = ({
       setSearch={setJobSearch}
       selectedItems={selectedItems}
       onSelectedItemsChange={onSelectedItemsChange}
-      type="job"
-    />
+    >
+      <AddJob id={null} />
+    </AddItemSelect>
   );
 };
 

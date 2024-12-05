@@ -109,5 +109,8 @@ body {
 
 *{
   direction: rtl;
+}
 
+.leftToRight {
+  direction: ltr;
 }

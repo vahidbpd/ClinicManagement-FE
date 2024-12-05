@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import useDebounce from "@/hooks/useDebounce";
 import AddPatientSelectItem from "../addPatientSelectItem";
 import AddPatientSelect from "../addPatienSelect";
+import AddItemSelect from "@/components/listItems/addItemSelect";
 
 const patients = [
   {
@@ -139,7 +140,7 @@ const AddPatientFamilyRelatives= ({
         </SheetContent>
       </Sheet> */}
 
-      <AddPatientSelect
+      <AddItemSelect
         data={structuredArray}
         title=" انتخاب بستگان"
         description="شما میتوانید افرادی که با بیمار نسبت فامیلی دارند را انتخاب کنید"
@@ -147,8 +148,7 @@ const AddPatientFamilyRelatives= ({
         setSearch={setRelativesSearch}
         selectedItems={selectedItems}
         onSelectedItemsChange={onSelectedItemsChange}
-        type="patient"
-      />
+      ><div></div></AddItemSelect>
     </>
   );
 };
