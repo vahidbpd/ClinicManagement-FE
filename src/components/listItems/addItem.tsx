@@ -18,12 +18,14 @@ const AddItem: React.FC<AddItemProps> = ({
   AddItemForm,
   children,
   customTriggerButton,
+  open,
+  setOpen
 }) => {
   useEffect(() => {
     console.log(id);
   }, []);
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         {customTriggerButton ? (
           customTriggerButton 
@@ -45,7 +47,7 @@ const AddItem: React.FC<AddItemProps> = ({
               : `شما میتوانید ${title} جدید اضافه کنید`}
           </SheetDescription>
         </SheetHeader>
-        {AddItemForm ? <AddItemForm id={id as string} /> : children}
+        {AddItemForm ? <AddItemForm id={id as string} setOpen={setOpen ? setOpen : undefined}/> : children}
       </SheetContent>
     </Sheet>
   );

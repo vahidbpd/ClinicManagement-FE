@@ -21,6 +21,7 @@ import {
 import AddItemSelectItem from "./addItemSelectItem";
 import { DoctorWork } from "@/types/doctor.types";
 import DoctorWorkItem from "../staff/doctors/doctorWork/doctorWorkItem";
+import { toast } from "sonner";
 
 const AddItemSelect = ({
   selectedItems,
@@ -48,6 +49,7 @@ const AddItemSelect = ({
     if (doctorWorkOnChange) {
       const updatedSelectedItems = selectedItems.filter((_, i) => i !== index);
       doctorWorkOnChange(updatedSelectedItems as DoctorWork[]);
+      toast.success("زمان کاری با موفقیت حذف شد.");
     }
   };
 

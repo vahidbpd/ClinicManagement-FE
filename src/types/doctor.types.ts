@@ -1,7 +1,8 @@
 import { TimeValue } from "@react-types/datepicker";
 import { doctorWorkSchema } from "@/schema";
 import { z } from "zod";
-import { CustomTriggerButton } from "./itemsList.types";
+import { CustomTriggerButton, SetOpen } from "./itemsList.types";
+import { Dispatch, SetStateAction } from "react";
 type dayOfWork = "sat" | "sun" | "mon" | "tus" | "wed" | "thu" | "fri";
 
 export type DoctorWorkFunction = (index: number) => void;
@@ -12,7 +13,7 @@ export interface DoctorWorkItemProps {
   endAt: string;
   onDelete: DoctorWorkFunction;
   onEdit: DoctorWorkFunction;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export type DoctorWork = z.infer<typeof doctorWorkSchema>;
@@ -22,6 +23,8 @@ export type AddDoctorWorkDoctorProps = {
   onSelectedItemsChange: (item: DoctorWork[]) => void;
 };
 
-export type AddDoctorWorkDoctorWithIdProps = AddDoctorWorkDoctorProps & CustomTriggerButton & {
-  index: number | null;
-};
+export type AddDoctorWorkDoctorWithIdProps = AddDoctorWorkDoctorProps &
+  CustomTriggerButton & {
+    index: number | null;
+    setOpen: SetOpen;
+  };

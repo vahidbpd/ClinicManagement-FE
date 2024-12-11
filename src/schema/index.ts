@@ -15,7 +15,7 @@ const calendarDateSchema = z.custom<CalendarDate>(
   }
 );
 
-export const addPatientSchema = z.object({
+export const addUserSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   gender: z.enum(["male", "female"]),
@@ -30,13 +30,16 @@ export const addPatientSchema = z.object({
     .min(11, { message: "شماره موبایل باید حداقل 11 رقم باشد" })
     .max(12, { message: "شماره موبایل حداکثر میتواند 12 رقم باشد" }),
   address: z.string(),
-  familyRelatives: z.array(z.string()),
   nationalId: z.string(),
+  description: z.string(),
+});
+
+export const addPatientSchema = addUserSchema.extend({
+  familyRelatives: z.array(z.string()),
   job: z.array(z.string()),
   representative: z.string(),
   oldFileNumber: z.string().optional(),
   paperFileNumber: z.string().optional(),
-  description: z.string(),
   disease: z.array(z.string()),
 });
 
@@ -54,7 +57,15 @@ export const medicineSchema = z.object({
   description: z.string().optional(),
 });
 
-export const dayOfWork = z.enum(["sat", "sun", "mon", "tus", "wed", "thu", "fri"]);
+export const dayOfWork = z.enum([
+  "sat",
+  "sun",
+  "mon",
+  "tus",
+  "wed",
+  "thu",
+  "fri",
+]);
 
 export const doctorWorkSchema = z.object({
   day: dayOfWork,
@@ -83,7 +94,7 @@ export const doctorSchema = z.object({
     .string()
     .min(1, { message: "لطفا شماره نظام پزشکی را وارد کنید" }),
   expertise: z.array(z.string()),
-  maximumDailyVisit: z.number(),
+  maximumDailyVisit: z.number({message:"لطفا یک مقدار معتبر عددی وارد کنید"}).min(1,{message:"لطفا یک مقدار برای تعداد ویزیت در روز انتخاب کنید"}),
   doctorServices: z.array(z.string()),
   doctorWork: z.array(doctorWorkSchema),
 });
@@ -96,4 +107,9 @@ export const expertiseSchema = z.object({
 export const serviceSchema = z.object({
   title: z.string().min(1, { message: "یک عنوان برای خدمات انتخاب کنید" }),
   description: z.string(),
+});
+
+export const addPersonnelsSchema = z.object({
+  user: addUserSchema,
+  role: z.string(),
 });

@@ -3,7 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { daySelectData } from "@/data/DayOfWeek";
 import { parseTimeString } from "@/lib/parseTimeString";
+import { getTitleByValue } from "@/lib/valueToTitle";
 import { DoctorWorkItemProps } from "@/types/doctor.types";
 import { TimeInput } from "@nextui-org/react";
 import { TimeValue } from "@react-types/datepicker";
@@ -22,18 +24,26 @@ const DoctorWorkItem: React.FC<DoctorWorkItemProps> = ({
   return (
     <Card className="my-2 ">
       <CardHeader>
-        <CardTitle>{day}</CardTitle>
+        <CardTitle>{getTitleByValue(day,daySelectData)}</CardTitle>
       </CardHeader>
       <CardContent className={"flex gap-2 w-full" + (day && "pt-6")}>
         <div className="flex items-center gap-2 w-full">
           <TimeInput
+            label="ساعت شروع"
+            classNames={{
+              base: "leftToRight",
+              input: "leftToRight",
+            }}
             isReadOnly
-            label="Event Time"
             value={parseTimeString(startAt) as TimeValue}
           />
           <TimeInput
+            label="ساعت پایان"
+            classNames={{
+              base: "leftToRight",
+              input: "leftToRight",
+            }}
             isReadOnly
-            label="Event Time"
             value={parseTimeString(endAt) as TimeValue}
           />
         </div>

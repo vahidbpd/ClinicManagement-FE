@@ -1,43 +1,47 @@
 "use client";
-
 import { z } from "zod";
-import { doctorSchema } from "@/schema/index";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
+import { addUserSchema, addPersonnelsSchema } from "@/schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "../../ui/scroll-area";
+import { I18nProvider } from "@react-aria/i18n";
+import { DateInput } from "@nextui-org/react";
+import { toCalendarDate } from "@internationalized/date";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { fromDate, toCalendarDate } from "@internationalized/date";
-import { I18nProvider } from "@react-aria/i18n";
-import { DateInput } from "@nextui-org/react";
-import AddDoctorExpertise from "./addDoctorExpertise";
-import AddDoctorService from "./addDoctorService";
-import AddDoctorDoctorWork from "./addDoctorDoctorWork";
-import { AddFormProps } from "@/types/itemsList.types";
-import { ChangeEvent } from "react";
+} from "../ui/select";
+import { ScrollArea } from "../ui/scroll-area";
+import { getTodayDate } from "@/lib/toDayDate";
+// type AddUserFormValues = z.infer<typeof addPersonnelsSchema>;
 
-const AddDoctorForm:React.FC<AddFormProps> = ({id}) => {
-  const todayDate = fromDate(
-    new Date(new Date().toISOString().split("T")[0]),
-    "Asia/Tehran"
-  );
-  const form = useForm<z.infer<typeof doctorSchema>>({
-    resolver: zodResolver(doctorSchema),
+// type AddUserFormProps = {
+//   form: UseFormReturn<AddUserFormValues>;
+// };
+
+type AddUserFormProps = {
+  id?: string;
+  formValueSetter: (values: z.infer<typeof addUserSchema>) => void;
+};
+
+const AddUserForm: React.FC<AddUserFormProps> = ({ formValueSetter, id }) => {
+  const todayDate = getTodayDate();
+
+  const form = useForm<z.infer<typeof addUserSchema>>({
+    resolver: zodResolver(addUserSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -47,18 +51,12 @@ const AddDoctorForm:React.FC<AddFormProps> = ({id}) => {
       landlineNumber: "",
       otherTelephoneNumber: "",
       address: "",
-      nationalId: "",
       description: "",
-      expertise: [],
-      maximumDailyVisit: 0,
-      doctorServices: [],
-      medicalSystemNumber: "",
-      doctorWork: [],
+      nationalId: "",
     },
   });
-
-  function onSubmit(values: z.infer<typeof doctorSchema>) {
-    console.log(values);
+  function onSubmit(values: z.infer<typeof addUserSchema>) {
+    formValueSetter(values);
   }
 
   return (
@@ -204,45 +202,6 @@ const AddDoctorForm:React.FC<AddFormProps> = ({id}) => {
               />
             </div>
 
-            <div className="flex gap-2">
-              <FormField
-                control={form.control}
-                name="medicalSystemNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>کد نظام پزشکی</FormLabel>
-                    <FormControl>
-                      <Input placeholder="کد نظام پزشکی" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="maximumDailyVisit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>حداکثر تعداد ویزیت در روز</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="حداکثر تعداد ویزیت در روز"
-                        // {...field}
-                        value={field.value}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                          const value = event.target.value; // Get the string value from the event
-                          const numberValue = parseInt(value, 10); // Convert it to a number
-                          field.onChange(numberValue); // Call the onChange with the number
-                        }}
-                        type="number"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             <FormField
               control={form.control}
               name="address"
@@ -256,58 +215,6 @@ const AddDoctorForm:React.FC<AddFormProps> = ({id}) => {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="expertise"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>تخصص ها</FormLabel>
-                  <FormControl>
-                    <AddDoctorExpertise
-                      onSelectedItemsChange={field.onChange}
-                      selectedItems={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="doctorServices"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>خدمات پزشک</FormLabel>
-                  <FormControl>
-                    <AddDoctorService
-                      onSelectedItemsChange={field.onChange}
-                      selectedItems={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="doctorWork"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>زمان کاری پزشک</FormLabel>
-                  <FormControl>
-                    <AddDoctorDoctorWork
-                      onSelectedItemsChange={field.onChange}
-                      selectedItems={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="description"
@@ -323,13 +230,16 @@ const AddDoctorForm:React.FC<AddFormProps> = ({id}) => {
             />
           </div>
         </ScrollArea>
-
-        <Button className="w-full mt-2" type="submit">
-          افزودن بیمار
+        <Button
+          className="w-full mt-2"
+          type="button" // This prevents the outer form from submitting
+          onClick={form.handleSubmit(onSubmit)}
+        >
+          Submit
         </Button>
       </form>
     </Form>
   );
 };
 
-export default AddDoctorForm;
+export default AddUserForm;

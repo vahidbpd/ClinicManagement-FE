@@ -30,40 +30,14 @@ import {
   isTimePeriodOverlapping,
 } from "@/lib/timeUtils";
 import { useEffect } from "react";
-const daySelectData = [
-  {
-    title: "شنبه",
-    value: "sat",
-  },
-  {
-    title: "یکشنبه",
-    value: "sun",
-  },
-  {
-    title: "دوشنبه",
-    value: "mon",
-  },
-  {
-    title: "سه شنبه",
-    value: "tus",
-  },
-  {
-    title: "چهارشنبه",
-    value: "wed",
-  },
-  {
-    title: "پنج شنبه",
-    value: "thu",
-  },
-  {
-    title: "جمعه",
-    value: "fri",
-  },
-];
+import { daySelectData } from "@/data/DayOfWeek";
+import { toast } from "sonner";
+
 const DoctorWorkForm: React.FC<AddDoctorWorkDoctorWithIdProps> = ({
   onSelectedItemsChange,
   selectedItems,
   index,
+  setOpen,
 }) => {
   const form = useForm<z.infer<typeof doctorWorkSchema>>({
     resolver: zodResolver(doctorWorkSchema),
@@ -87,9 +61,11 @@ const DoctorWorkForm: React.FC<AddDoctorWorkDoctorWithIdProps> = ({
     console.log(values);
 
     if (!isStartEarlierThanEnd(values.startAt, values.endAt)) {
+      console.log('melika inja run shod')
       form.setError("startAt", {
         message: "زمان شروع نمیواند از ساعت پایان بزرگ تر باشد",
       });
+      return  
     }
     if (index === null) {
       if (isTimePeriodOverlapping(selectedItems, values)) {
@@ -103,12 +79,16 @@ const DoctorWorkForm: React.FC<AddDoctorWorkDoctorWithIdProps> = ({
             "بازه زمانی انتخابی با دیگر بازه های زمانی این روز تداخل دارد.",
         });
       } else {
+        toast.success("زمان کاری با موفقیت اضافه شد.");
         onSelectedItemsChange([...selectedItems, values]);
+        setOpen(false);
       }
     } else {
       const updatedArray = [...selectedItems];
       updatedArray[index] = values;
       onSelectedItemsChange(updatedArray);
+      setOpen(false);
+      toast.success("زمان کاری با موفقیت ویرایش شد.");
     }
 
     console.log(selectedItems);
@@ -154,6 +134,7 @@ const DoctorWorkForm: React.FC<AddDoctorWorkDoctorWithIdProps> = ({
                     <FormControl>
                       <TimeInput
                         label="ساعت شروع"
+                        hourCycle={24}
                         classNames={{
                           base: "leftToRight",
                           input: "leftToRight",
@@ -182,6 +163,7 @@ const DoctorWorkForm: React.FC<AddDoctorWorkDoctorWithIdProps> = ({
                     <FormControl>
                       <TimeInput
                         label="ساعت پایان"
+                        hourCycle={24}
                         classNames={{
                           base: "leftToRight",
                           input: "leftToRight",
@@ -206,7 +188,7 @@ const DoctorWorkForm: React.FC<AddDoctorWorkDoctorWithIdProps> = ({
         </ScrollArea>
         <Button
           className="w-full mt-2"
-          type="button" // This prevents the outer form from submitting
+          type="button"
           onClick={form.handleSubmit(onSubmit)}
         >
           افزودن شغل

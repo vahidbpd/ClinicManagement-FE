@@ -37,12 +37,14 @@ export type ItemListProps = ItemListHederProps & TableItems;
 export interface CustomTriggerButton {
   customTriggerButton?: React.ReactNode;
 }
-
+export type SetOpen = Dispatch<SetStateAction<boolean>>;
 export type AddItemProps = CustomTriggerButton & {
   title: string;
   id: string | number | null;
-  AddItemForm?: React.ComponentType<{ id: string | null }>;
+  AddItemForm?: React.ComponentType<{ id?: string; setOpen?: SetOpen }>;
   children?: React.ReactNode;
+  open?: boolean;
+  setOpen?: SetOpen;
 };
 
 export type doctorWorkOnChange = (item: DoctorWork[]) => void;
@@ -69,3 +71,8 @@ export type AddItemSelectProps = {
   selectedItems: string[] | [];
   onSelectedItemsChange: (item: string[] | []) => void;
 };
+
+export interface AddFormProps {
+  id?: string;
+  setOpen?: SetOpen
+}

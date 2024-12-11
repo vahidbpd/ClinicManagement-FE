@@ -28,12 +28,10 @@ import { DateInput } from "@nextui-org/react";
 import AddPatientDiseaseSelect from "./addPatientDiseaseSelect/addPatientDiseaseSelect";
 import AddPatientFamilyRelatives from "./addPatientFamilyRelatives/addPatientFamilyRelativesItem";
 import AddPatientJob from "./addPatientJob/addPatientJob";
+import { getTodayDate } from "@/lib/toDayDate";
 
 const AddPatientForm = () => {
-  const todayDate = fromDate(
-    new Date(new Date().toISOString().split("T")[0]),
-    "Asia/Tehran"
-  );
+  const todayDate = getTodayDate();
   const form = useForm<z.infer<typeof addPatientSchema>>({
     resolver: zodResolver(addPatientSchema),
     defaultValues: {

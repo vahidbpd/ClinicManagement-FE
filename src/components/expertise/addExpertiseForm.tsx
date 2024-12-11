@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "../ui/scroll-area";
+import { AddFormProps } from "@/types/itemsList.types";
 
-const AddExpertiseForm = () => {
+const AddExpertiseForm: React.FC<AddFormProps> = ({ id, setOpen }) => {
   const form = useForm<z.infer<typeof expertiseSchema>>({
     resolver: zodResolver(expertiseSchema),
     defaultValues: {
@@ -29,6 +30,9 @@ const AddExpertiseForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    if (setOpen) {
+      setOpen(false);
+    }
   }
 
   return (
@@ -63,7 +67,11 @@ const AddExpertiseForm = () => {
             />
           </div>
         </ScrollArea>
-        <Button className="w-full mt-2" type="submit">
+        <Button
+          className="w-full mt-2"
+          type="button"
+          onClick={form.handleSubmit(onSubmit)}
+        >
           Submit
         </Button>
       </form>

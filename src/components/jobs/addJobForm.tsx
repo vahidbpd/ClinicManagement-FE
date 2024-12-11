@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "../ui/scroll-area";
+import { AddFormProps } from "@/types/itemsList.types";
 
-const AddJobForm = () => {
+const AddJobForm: React.FC<AddFormProps> = ({ id, setOpen }) => {
   const form = useForm<z.infer<typeof jobSchema>>({
     resolver: zodResolver(jobSchema),
     defaultValues: {
@@ -24,8 +25,10 @@ const AddJobForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof jobSchema>) {
-
     console.log(values);
+    if (setOpen) {
+      setOpen(false);
+    }
   }
 
   return (
@@ -47,7 +50,11 @@ const AddJobForm = () => {
             />
           </div>
         </ScrollArea>
-        <Button className="w-full mt-2" type="submit">
+        <Button
+          className="w-full mt-2"
+          type="button"
+          onClick={form.handleSubmit(onSubmit)}
+        >
           افزودن شغل
         </Button>
       </form>
